@@ -3,11 +3,6 @@ import { CoverageAreaValidatorSpy } from '../mocks'
 
 const fieldName = 'coverageArea'
 
-const data = {
-  type: 'valid_type',
-  coordinates: 'valid_coordinates'
-}
-
 type SutTypes = {
   sut: CoverageAreaValidation
   coverageAreaValidatorSpy: CoverageAreaValidatorSpy
