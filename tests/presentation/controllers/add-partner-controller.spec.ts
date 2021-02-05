@@ -1,4 +1,4 @@
-import { ValidationSpy } from '../mocks'
+import { ValidationSpy, AddPartnerSpy } from '../mocks'
 import { AddPartnerController } from '@/presentation/controllers'
 
 type MockedRequest = {
@@ -14,15 +14,18 @@ let mockedRequest: MockedRequest
 type SutTypes = {
   sut: AddPartnerController
   validationSpy: ValidationSpy
+  addPartnerSpy: AddPartnerSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const sut = new AddPartnerController(validationSpy)
+  const addPartnerSpy = new AddPartnerSpy()
+  const sut = new AddPartnerController(validationSpy, addPartnerSpy)
 
   return {
     sut,
-    validationSpy
+    validationSpy,
+    addPartnerSpy
   }
 }
 
@@ -56,5 +59,12 @@ describe('AddPartnerController', () => {
     const request = { body: mockedRequest }
     const httpResponse = sut.handle(request)
     expect(httpResponse.statusCode).toBe(400)
+  })
+
+  it('Should call AddPartner with correct values', () => {
+    const { sut, addPartnerSpy } = makeSut()
+    const request = { body: mockedRequest }
+    sut.handle(request)
+    expect(addPartnerSpy.params).toEqual(request.body)
   })
 })
