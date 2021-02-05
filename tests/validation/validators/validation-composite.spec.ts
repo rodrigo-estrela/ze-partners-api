@@ -3,28 +3,28 @@ import { ValidationComposite } from '@/validation/validators'
 
 type SutTypes = {
   sut: ValidationComposite
-  validationsSpies: ValidationSpy[]
+  validationSpies: ValidationSpy[]
 }
 
 const makeSut = (): SutTypes => {
-  const validationsSpies = [
+  const validationSpies = [
     new ValidationSpy(),
     new ValidationSpy()
   ]
-  const sut = new ValidationComposite(validationsSpies)
+  const sut = new ValidationComposite(validationSpies)
 
   return {
     sut,
-    validationsSpies
+    validationSpies
   }
 }
 
 describe('ValidationComposite', () => {
   it('Should return an error if any of the validators fails', () => {
-    const { sut, validationsSpies } = makeSut()
+    const { sut, validationSpies } = makeSut()
     const field = 'missing_field'
-    validationsSpies[1].error = new Error(`Missing Param: ${field}`)
+    validationSpies[1].error = new Error(`Missing Param: ${field}`)
     const error = sut.validate({ field: 'valid_field' })
-    expect(error).toEqual(validationsSpies[1].error)
+    expect(error).toEqual(validationSpies[1].error)
   })
 })
