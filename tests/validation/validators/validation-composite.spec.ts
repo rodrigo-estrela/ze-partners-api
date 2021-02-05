@@ -27,4 +27,12 @@ describe('ValidationComposite', () => {
     const error = sut.validate({ field: 'valid_field' })
     expect(error).toEqual(validationSpies[1].error)
   })
+
+  it('Should return the first error if more then one validation fails', () => {
+    const { sut, validationSpies } = makeSut()
+    validationSpies[0].error = new Error('first_error')
+    validationSpies[1].error = new Error('second_error')
+    const error = sut.validate({ field: 'valid_field' })
+    expect(error).toEqual(validationSpies[0].error)
+  })
 })
