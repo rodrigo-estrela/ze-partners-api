@@ -32,4 +32,10 @@ describe('CoverageAreaValidation', () => {
     sut.validate('valid_coverage_area')
     expect(isValidSpy).toHaveBeenCalledWith('valid_coverage_area')
   })
+
+  it('Should throw if CoverageAreaValidator throws', () => {
+    const { sut, coverageAreaValidatorSpy } = makeSut()
+    jest.spyOn(coverageAreaValidatorSpy, 'isValid').mockImplementationOnce(() => { throw new Error() })
+    expect(sut.validate).toThrow()
+  })
 })
