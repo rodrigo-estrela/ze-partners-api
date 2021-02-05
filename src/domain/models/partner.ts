@@ -7,12 +7,12 @@ export type PartnerModel = {
   address: Address
 }
 
-type CoverageArea = {
+export type CoverageArea = {
   type: string
-  coordinates: []
+  coordinates: number[][][]
 }
 
-type Address = {
+export type Address = {
   type: string
-  coordinates: []
+  coordinates: number[]
 }
