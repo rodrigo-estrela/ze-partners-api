@@ -5,7 +5,13 @@ export class AddPartnerController {
   constructor (private readonly validation: Validation) { }
 
   handle (request: HttpRequest): HttpResponse {
-    this.validation.validate(request)
+    const error = this.validation.validate(request)
+    if (error) {
+      return {
+        statusCode: 400,
+        body: 'Invalid Param'
+      }
+    }
     return {
       statusCode: 200,
       body: 'ok'

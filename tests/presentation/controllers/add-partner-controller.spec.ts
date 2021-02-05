@@ -49,4 +49,12 @@ describe('AddPartnerController', () => {
     sut.handle(request)
     expect(validationSpy.input).toEqual(request)
   })
+
+  it('Should return 400 if the Validation fails', () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.error = new Error()
+    const request = { body: mockedRequest }
+    const httpResponse = sut.handle(request)
+    expect(httpResponse.statusCode).toBe(400)
+  })
 })
