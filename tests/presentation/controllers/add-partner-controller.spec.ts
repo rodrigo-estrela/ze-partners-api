@@ -67,4 +67,19 @@ describe('AddPartnerController', () => {
     sut.handle(request)
     expect(addPartnerSpy.params).toEqual(request.body)
   })
+
+  it('Should return 500 if AddPartner throws', () => {
+    const { sut, addPartnerSpy } = makeSut()
+    jest.spyOn(addPartnerSpy, 'add').mockImplementationOnce(() => { throw new Error() })
+    const request = { body: mockedRequest }
+    const response = sut.handle(request)
+    expect(response.statusCode).toBe(500)
+  })
+
+  it('Should return 204 on success', () => {
+    const { sut } = makeSut()
+    const request = { body: mockedRequest }
+    const response = sut.handle(request)
+    expect(response.statusCode).toBe(204)
+  })
 })
