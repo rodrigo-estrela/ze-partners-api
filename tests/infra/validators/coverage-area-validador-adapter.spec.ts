@@ -22,4 +22,13 @@ describe('CoverageAreaValidatorAdapter', () => {
     })
     expect(isValid).toBe(false)
   })
+
+  it('Should return true if geojson-validation return true', () => {
+    const sut = makeSut()
+    const isValid = sut.isValid({
+      type: 'valid_type',
+      coordinates: []
+    })
+    expect(isValid).toBe(true)
+  })
 })
