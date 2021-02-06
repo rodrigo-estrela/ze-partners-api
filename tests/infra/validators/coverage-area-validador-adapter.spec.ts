@@ -31,4 +31,17 @@ describe('CoverageAreaValidatorAdapter', () => {
     })
     expect(isValid).toBe(true)
   })
+
+  it('Should call geojson-validation with correct data', () => {
+    const sut = makeSut()
+    const isMultiPolygonSpy = jest.spyOn(geojsonValidation, 'isMultiPolygon')
+    sut.isValid({
+      type: 'valid_type',
+      coordinates: []
+    })
+    expect(isMultiPolygonSpy).toHaveBeenCalledWith({
+      type: 'valid_type',
+      coordinates: []
+    })
+  })
 })
