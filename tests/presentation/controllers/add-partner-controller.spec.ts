@@ -1,5 +1,6 @@
 import { ValidationSpy, AddPartnerSpy } from '../mocks'
 import { AddPartnerController } from '@/presentation/controllers'
+import { serverError } from '@/presentation/helpers'
 
 type MockedRequest = {
   tradingName: string
@@ -73,7 +74,7 @@ describe('AddPartnerController', () => {
     jest.spyOn(addPartnerSpy, 'add').mockImplementationOnce(() => { throw new Error() })
     const request = { body: mockedRequest }
     const response = await sut.handle(request)
-    expect(response.statusCode).toBe(500)
+    expect(response).toEqual(serverError(new Error()))
   })
 
   it('Should return 204 on success', async () => {

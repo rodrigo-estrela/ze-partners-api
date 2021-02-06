@@ -1,5 +1,5 @@
 import { Validation, Controller } from '../protocols'
-import { HttpRequest, HttpResponse } from '../helpers'
+import { HttpRequest, HttpResponse, serverError } from '../helpers'
 import { AddPartner } from '@/domain/usecases'
 
 export class AddPartnerController implements Controller {
@@ -21,10 +21,7 @@ export class AddPartnerController implements Controller {
         body: 'No Body'
       }
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: 'Internal Server Error'
-      }
+      return serverError(error)
     }
   }
 }
