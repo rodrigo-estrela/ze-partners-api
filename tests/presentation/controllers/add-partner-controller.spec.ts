@@ -1,6 +1,6 @@
 import { ValidationSpy, AddPartnerSpy } from '../mocks'
 import { AddPartnerController } from '@/presentation/controllers'
-import { serverError, ok } from '@/presentation/helpers'
+import { serverError, badRequest } from '@/presentation/helpers'
 
 type MockedRequest = {
   tradingName: string
@@ -59,7 +59,7 @@ describe('AddPartnerController', () => {
     validationSpy.error = new Error()
     const request = { body: mockedRequest }
     const httpResponse = await sut.handle(request)
-    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
 
   it('Should call AddPartner with correct values', async () => {

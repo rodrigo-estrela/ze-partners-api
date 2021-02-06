@@ -1,5 +1,5 @@
 import { Validation, Controller } from '../protocols'
-import { HttpRequest, HttpResponse, serverError, ok } from '../helpers'
+import { HttpRequest, HttpResponse, serverError, ok, badRequest } from '../helpers'
 import { AddPartner } from '@/domain/usecases'
 
 export class AddPartnerController implements Controller {
@@ -8,12 +8,7 @@ export class AddPartnerController implements Controller {
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
       const error = this.validation.validate(request)
-      if (error) {
-        return {
-          statusCode: 400,
-          body: 'Invalid Param'
-        }
-      }
+      if (error) return badRequest(error)
 
       const partner = await this.addPartner.add(request.body)
 
