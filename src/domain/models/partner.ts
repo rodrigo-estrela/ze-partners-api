@@ -1,7 +1,7 @@
 export type PartnerModel = {
   id: string
   tradingName: string
-  owerName: string
+  ownerName: string
   document: string
   coverageArea: CoverageArea
   address: Address
