@@ -32,4 +32,10 @@ describe('AddressValidation', () => {
     sut.validate('valid_coverage_area')
     expect(isValidSpy).toHaveBeenCalledWith('valid_coverage_area')
   })
+
+  it('Should throw if AddressValidator throws', () => {
+    const { sut, addressValidatorSpy } = makeSut()
+    jest.spyOn(addressValidatorSpy, 'isValid').mockImplementationOnce(() => { throw new Error() })
+    expect(sut.validate).toThrow()
+  })
 })
