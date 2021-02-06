@@ -1,3 +1,4 @@
+import { InvalidParamError } from '@/presentation/errors'
 import { CoverageAreaValidation } from '@/validation/validators'
 import { CoverageAreaValidatorSpy } from '../mocks'
 
@@ -23,7 +24,7 @@ describe('CoverageAreaValidation', () => {
     const { sut, coverageAreaValidatorSpy } = makeSut()
     coverageAreaValidatorSpy.isCoverageAreaValid = false
     const error = sut.validate({ [fieldName]: 'valid_coverage_area' })
-    expect(error).toEqual(new Error(`Invalid Param: ${fieldName}`))
+    expect(error).toEqual(new InvalidParamError(fieldName))
   })
 
   it('Should all CoverageAreaValidator with correct data', () => {

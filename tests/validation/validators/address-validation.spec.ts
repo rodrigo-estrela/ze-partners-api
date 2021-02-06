@@ -1,5 +1,6 @@
 import { AddressValidation } from '@/validation/validators'
 import { AddressValidatorSpy } from '../mocks'
+import { InvalidParamError } from '@/presentation/errors'
 
 const fieldName = 'address'
 
@@ -23,7 +24,7 @@ describe('AddressValidation', () => {
     const { sut, addressValidatorSpy } = makeSut()
     addressValidatorSpy.isAddressValid = false
     const error = sut.validate({ [fieldName]: 'valid_address' })
-    expect(error).toEqual(new Error(`Invalid Param: ${fieldName}`))
+    expect(error).toEqual(new InvalidParamError(fieldName))
   })
 
   it('Should call AddressValidator with correct data', () => {
