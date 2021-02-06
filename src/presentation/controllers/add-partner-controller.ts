@@ -5,7 +5,7 @@ import { AddPartner } from '@/domain/usecases'
 export class AddPartnerController {
   constructor (private readonly validation: Validation, private readonly addPartner: AddPartner) { }
 
-  handle (request: HttpRequest): HttpResponse {
+  async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
       const error = this.validation.validate(request)
       if (error) {
@@ -14,7 +14,8 @@ export class AddPartnerController {
           body: 'Invalid Param'
         }
       }
-      this.addPartner.add(request.body)
+
+      await this.addPartner.add(request.body)
       return {
         statusCode: 204,
         body: 'No Body'

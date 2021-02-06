@@ -46,40 +46,40 @@ describe('AddPartnerController', () => {
     }
   })
 
-  it('Should call validation with corret values', () => {
+  it('Should call validation with corret values', async () => {
     const { sut, validationSpy } = makeSut()
     const request = { body: mockedRequest }
-    sut.handle(request)
+    await sut.handle(request)
     expect(validationSpy.input).toEqual(request)
   })
 
-  it('Should return 400 if the Validation fails', () => {
+  it('Should return 400 if the Validation fails', async () => {
     const { sut, validationSpy } = makeSut()
     validationSpy.error = new Error()
     const request = { body: mockedRequest }
-    const httpResponse = sut.handle(request)
+    const httpResponse = await sut.handle(request)
     expect(httpResponse.statusCode).toBe(400)
   })
 
-  it('Should call AddPartner with correct values', () => {
+  it('Should call AddPartner with correct values', async () => {
     const { sut, addPartnerSpy } = makeSut()
     const request = { body: mockedRequest }
-    sut.handle(request)
+    await sut.handle(request)
     expect(addPartnerSpy.params).toEqual(request.body)
   })
 
-  it('Should return 500 if AddPartner throws', () => {
+  it('Should return 500 if AddPartner throws', async () => {
     const { sut, addPartnerSpy } = makeSut()
     jest.spyOn(addPartnerSpy, 'add').mockImplementationOnce(() => { throw new Error() })
     const request = { body: mockedRequest }
-    const response = sut.handle(request)
+    const response = await sut.handle(request)
     expect(response.statusCode).toBe(500)
   })
 
-  it('Should return 204 on success', () => {
+  it('Should return 204 on success', async () => {
     const { sut } = makeSut()
     const request = { body: mockedRequest }
-    const response = sut.handle(request)
+    const response = await sut.handle(request)
     expect(response.statusCode).toBe(204)
   })
 })
