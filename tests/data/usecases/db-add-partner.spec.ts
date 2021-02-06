@@ -37,4 +37,11 @@ describe('DbAddPartner Usecase', () => {
     await sut.add(partnerData)
     expect(addPartnerRepositorySpy.params).toEqual(partnerData)
   })
+
+  test('Should throw if AddPartnerRepository throws', async () => {
+    const { sut, addPartnerRepositorySpy } = makeSut()
+    jest.spyOn(addPartnerRepositorySpy, 'add').mockImplementationOnce(() => { throw new Error() })
+    const promise = sut.add(partnerData)
+    await expect(promise).rejects.toThrow()
+  })
 })
