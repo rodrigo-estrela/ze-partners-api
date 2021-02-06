@@ -1,6 +1,6 @@
 import { ValidationSpy, AddPartnerSpy } from '../mocks'
 import { AddPartnerController } from '@/presentation/controllers'
-import { serverError } from '@/presentation/helpers'
+import { serverError, ok } from '@/presentation/helpers'
 
 type MockedRequest = {
   tradingName: string
@@ -77,10 +77,11 @@ describe('AddPartnerController', () => {
     expect(response).toEqual(serverError(new Error()))
   })
 
-  it('Should return 204 on success', async () => {
+  it('Should return 200 on success', async () => {
     const { sut } = makeSut()
     const request = { body: mockedRequest }
     const response = await sut.handle(request)
-    expect(response.statusCode).toBe(204)
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toHaveProperty('id')
   })
 })

@@ -1,5 +1,5 @@
 import { Validation, Controller } from '../protocols'
-import { HttpRequest, HttpResponse, serverError } from '../helpers'
+import { HttpRequest, HttpResponse, serverError, ok } from '../helpers'
 import { AddPartner } from '@/domain/usecases'
 
 export class AddPartnerController implements Controller {
@@ -15,11 +15,9 @@ export class AddPartnerController implements Controller {
         }
       }
 
-      await this.addPartner.add(request.body)
-      return {
-        statusCode: 204,
-        body: 'No Body'
-      }
+      const partner = await this.addPartner.add(request.body)
+
+      return ok(partner)
     } catch (error) {
       return serverError(error)
     }
