@@ -1,8 +1,8 @@
-import { Validation } from '../protocols'
+import { Validation, Controller } from '../protocols'
 import { HttpRequest, HttpResponse } from '../helpers'
 import { AddPartner } from '@/domain/usecases'
 
-export class AddPartnerController {
+export class AddPartnerController implements Controller {
   constructor (private readonly validation: Validation, private readonly addPartner: AddPartner) { }
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
