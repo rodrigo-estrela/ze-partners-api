@@ -1,5 +1,5 @@
 import { AddPartnerRepositorySpy, CheckPartnerByDocumentRepositorySpy } from '../mocks'
-import { DbAddPartner } from '@/data/usecases'
+import { DbAddPartner } from '../../../src/data/usecases'
 import { AddPartnerParams } from '@/domain/usecases'
 
 const partnerData: AddPartnerParams = {

@@ -1,7 +1,7 @@
 import { ValidationSpy, AddPartnerSpy } from '../mocks'
-import { AddPartnerController } from '@/presentation/controllers'
+import { AddPartnerController } from '../../../src/presentation/controllers'
 import { serverError, badRequest, forbidden } from '@/presentation/helpers'
-import { DocumentInUseError } from '@/presentation/errors'
+import { DocumentInUseError } from '../../../src/presentation/errors'
 
 type MockedRequest = {
   tradingName: string
@@ -52,7 +52,7 @@ describe('AddPartnerController', () => {
     const { sut, validationSpy } = makeSut()
     const request = { body: mockedRequest }
     await sut.handle(request)
-    expect(validationSpy.input).toEqual(request)
+    expect(validationSpy.input).toEqual(request.body)
   })
 
   it('Should return 400 if the Validation fails', async () => {

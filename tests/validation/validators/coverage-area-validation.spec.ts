@@ -1,5 +1,5 @@
-import { InvalidParamError } from '@/presentation/errors'
-import { CoverageAreaValidation } from '@/validation/validators'
+import { InvalidParamError } from '../../../src/presentation/errors'
+import { CoverageAreaValidation } from '../../../src/validation/validators'
 import { CoverageAreaValidatorSpy } from '../mocks'
 
 const fieldName = 'coverageArea'
@@ -25,13 +25,6 @@ describe('CoverageAreaValidation', () => {
     coverageAreaValidatorSpy.isCoverageAreaValid = false
     const error = sut.validate({ [fieldName]: 'valid_coverage_area' })
     expect(error).toEqual(new InvalidParamError(fieldName))
-  })
-
-  it('Should all CoverageAreaValidator with correct data', () => {
-    const { sut, coverageAreaValidatorSpy } = makeSut()
-    const isValidSpy = jest.spyOn(coverageAreaValidatorSpy, 'isValid')
-    sut.validate('valid_coverage_area')
-    expect(isValidSpy).toHaveBeenCalledWith('valid_coverage_area')
   })
 
   it('Should throw if CoverageAreaValidator throws', () => {

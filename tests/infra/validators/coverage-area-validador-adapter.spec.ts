@@ -1,4 +1,4 @@
-import { CoverageAreaValidatorAdapter } from '@/infra/validators'
+import { CoverageAreaValidatorAdapter } from '../../../src/infra/validators'
 
 import geojsonValidation from 'geojson-validation'
 
