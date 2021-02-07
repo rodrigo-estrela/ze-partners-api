@@ -1,7 +1,7 @@
 import { AddPartnerRepository, CheckPartnerByDocumentRepository } from '@/data/protocols/db/partner'
 import { PartnerModel } from '@/domain/models'
 import { AddPartnerParams } from '@/domain/usecases'
-import { MongoHelper } from '@/infra/db/mongodb'
+import { MongoHelper } from '../mongodb'
 
 export class PartnerMongoRepository implements AddPartnerRepository, CheckPartnerByDocumentRepository {
   async add (data: AddPartnerParams): Promise<PartnerModel> {
