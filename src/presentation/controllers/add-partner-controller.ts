@@ -8,7 +8,7 @@ export class AddPartnerController implements Controller {
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(request)
+      const error = this.validation.validate(request.body)
       if (error) return badRequest(error)
 
       const partner = await this.addPartner.add(request.body)

@@ -1,6 +1,6 @@
-import { AddressValidation } from '@/validation/validators'
+import { AddressValidation } from '../../../src/validation/validators'
 import { AddressValidatorSpy } from '../mocks'
-import { InvalidParamError } from '@/presentation/errors'
+import { InvalidParamError } from '../../../src/presentation/errors'
 
 const fieldName = 'address'
 
@@ -25,13 +25,6 @@ describe('AddressValidation', () => {
     addressValidatorSpy.isAddressValid = false
     const error = sut.validate({ [fieldName]: 'valid_address' })
     expect(error).toEqual(new InvalidParamError(fieldName))
-  })
-
-  it('Should call AddressValidator with correct data', () => {
-    const { sut, addressValidatorSpy } = makeSut()
-    const isValidSpy = jest.spyOn(addressValidatorSpy, 'isValid')
-    sut.validate('valid_coverage_area')
-    expect(isValidSpy).toHaveBeenCalledWith('valid_coverage_area')
   })
 
   it('Should throw if AddressValidator throws', () => {

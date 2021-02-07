@@ -1,4 +1,4 @@
-import { AddressValidatorAdapter } from '@/infra/validators'
+import { AddressValidatorAdapter } from '../../../src/infra/validators'
 
 import geojsonValidation from 'geojson-validation'
 
