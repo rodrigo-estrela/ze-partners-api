@@ -1,4 +1,4 @@
-import { AddPartnerRepositorySpy } from '../mocks'
+import { AddPartnerRepositorySpy, CheckPartnerByDocumentRepositorySpy } from '../mocks'
 import { DbAddPartner } from '@/data/usecases'
 import { AddPartnerParams } from '@/domain/usecases'
 
@@ -19,15 +19,18 @@ const partnerData: AddPartnerParams = {
 type SutTypes = {
   sut: DbAddPartner
   addPartnerRepositorySpy: AddPartnerRepositorySpy
+  checkPartnerByDocumentRepositorySpy: CheckPartnerByDocumentRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const addPartnerRepositorySpy = new AddPartnerRepositorySpy()
-  const sut = new DbAddPartner(addPartnerRepositorySpy)
+  const checkPartnerByDocumentRepositorySpy = new CheckPartnerByDocumentRepositorySpy()
+  const sut = new DbAddPartner(addPartnerRepositorySpy, checkPartnerByDocumentRepositorySpy)
 
   return {
     sut,
-    addPartnerRepositorySpy
+    addPartnerRepositorySpy,
+    checkPartnerByDocumentRepositorySpy
   }
 }
 
@@ -43,6 +46,13 @@ describe('DbAddPartner Usecase', () => {
     jest.spyOn(addPartnerRepositorySpy, 'add').mockImplementationOnce(() => { throw new Error() })
     const promise = sut.add(partnerData)
     await expect(promise).rejects.toThrow()
+  })
+
+  it('Should return undefined if document is already in use', async () => {
+    const { sut, checkPartnerByDocumentRepositorySpy } = makeSut()
+    checkPartnerByDocumentRepositorySpy.result = true
+    const partner = await sut.add(partnerData)
+    expect(partner).toBeUndefined()
   })
 
   it('Should return partner data on success', async () => {
