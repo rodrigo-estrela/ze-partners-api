@@ -1,5 +1,10 @@
 import request from 'supertest'
 import app from '@/main/config/app'
+import { MongoHelper } from '@/infra/db/mongodb'
+
+import { Collection } from 'mongodb'
+
+let partnerCollection: Collection
 
 const partnerData = {
   tradingName: 'Adega da Cerveja - Pinheiros',
@@ -19,6 +24,19 @@ const partnerData = {
 }
 
 describe('Partner Routes', () => {
+  beforeAll(async () => {
+    await MongoHelper.connect(process.env.MONGO_URL)
+  })
+
+  afterAll(async () => {
+    await MongoHelper.disconnect()
+  })
+
+  beforeEach(async () => {
+    partnerCollection = await MongoHelper.getCollection('accounts')
+    await partnerCollection.deleteMany({})
+  })
+
   it('Should return an accoutn on success', async () => {
     await request(app)
       .post('/api/partners')
