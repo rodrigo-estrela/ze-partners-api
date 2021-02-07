@@ -43,4 +43,13 @@ describe('PartnerMongoRepositoy', () => {
       expect(partner).toHaveProperty('_id')
     })
   })
+
+  describe('checkByDocument()', () => {
+    it('Should return true if document is already in use', async () => {
+      const sut = makeSut()
+      await partnerCollection.insertOne(addPartnerParams)
+      const exists = await sut.checkByDocument(addPartnerParams.document)
+      expect(exists).toBe(true)
+    })
+  })
 })
