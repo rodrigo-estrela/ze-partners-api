@@ -1,6 +1,7 @@
 import { Validation, Controller } from '../protocols'
-import { HttpRequest, HttpResponse, serverError, ok, badRequest } from '../helpers'
+import { HttpRequest, HttpResponse, serverError, ok, badRequest, forbidden } from '../helpers'
 import { AddPartner } from '@/domain/usecases'
+import { DocumentInUseError } from '../errors'
 
 export class AddPartnerController implements Controller {
   constructor (private readonly validation: Validation, private readonly addPartner: AddPartner) { }
@@ -12,10 +13,7 @@ export class AddPartnerController implements Controller {
 
       const partner = await this.addPartner.add(request.body)
       if (!partner) {
-        return {
-          statusCode: 403,
-          body: 'Document already in use'
-        }
+        return forbidden(new DocumentInUseError())
       }
 
       return ok(partner)

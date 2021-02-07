@@ -1,6 +1,7 @@
 import { ValidationSpy, AddPartnerSpy } from '../mocks'
 import { AddPartnerController } from '@/presentation/controllers'
-import { serverError, badRequest } from '@/presentation/helpers'
+import { serverError, badRequest, forbidden } from '@/presentation/helpers'
+import { DocumentInUseError } from '@/presentation/errors'
 
 type MockedRequest = {
   tradingName: string
@@ -74,7 +75,7 @@ describe('AddPartnerController', () => {
     jest.spyOn(addPartnerSpy, 'add').mockResolvedValueOnce(null)
     const request = { body: mockedRequest }
     const response = await sut.handle(request)
-    expect(response.statusCode).toBe(403)
+    expect(response).toEqual(forbidden(new DocumentInUseError()))
   })
 
   it('Should return 500 if AddPartner throws', async () => {
