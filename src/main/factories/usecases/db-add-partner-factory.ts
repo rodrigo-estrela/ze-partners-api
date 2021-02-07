@@ -1,5 +1,5 @@
-import { DbAddPartner } from '@/data/usecases'
-import { PartnerMongoRepository } from '@/infra/db'
+import { DbAddPartner } from '../../../data/usecases'
+import { PartnerMongoRepository } from '../../../infra/db'
 
 export const makeDbAddPartner = (): DbAddPartner => {
   const partnerMongoRepository = new PartnerMongoRepository()

@@ -1,4 +1,4 @@
-import { AddPartnerController } from '@/presentation/controllers'
+import { AddPartnerController } from '../../../presentation/controllers'
 import { makeAddPartnerValidations } from './add-partner-validations-factory'
 import { makeDbAddPartner } from '../usecases/db-add-partner-factory'
 
