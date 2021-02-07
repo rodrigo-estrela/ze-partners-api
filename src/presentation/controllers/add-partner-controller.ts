@@ -11,6 +11,12 @@ export class AddPartnerController implements Controller {
       if (error) return badRequest(error)
 
       const partner = await this.addPartner.add(request.body)
+      if (!partner) {
+        return {
+          statusCode: 403,
+          body: 'Document already in use'
+        }
+      }
 
       return ok(partner)
     } catch (error) {

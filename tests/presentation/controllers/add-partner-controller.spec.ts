@@ -69,6 +69,14 @@ describe('AddPartnerController', () => {
     expect(addPartnerSpy.params).toEqual(request.body)
   })
 
+  it('Should should return 403 if document is already in use', async () => {
+    const { sut, addPartnerSpy } = makeSut()
+    jest.spyOn(addPartnerSpy, 'add').mockResolvedValueOnce(null)
+    const request = { body: mockedRequest }
+    const response = await sut.handle(request)
+    expect(response.statusCode).toBe(403)
+  })
+
   it('Should return 500 if AddPartner throws', async () => {
     const { sut, addPartnerSpy } = makeSut()
     jest.spyOn(addPartnerSpy, 'add').mockImplementationOnce(() => { throw new Error() })
