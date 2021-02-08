@@ -17,7 +17,7 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const checkPartnerByIdSpy = new CheckPartnerByIdSpy()
   const loadPartnerByIdSpy = new LoadPartnerByIdSpy()
-  const sut = new LoadPartnerController(checkPartnerByIdSpy, loadPartnerByIdSpy)
+  const sut = new LoadPartnerController(loadPartnerByIdSpy)
 
   return {
     sut,
@@ -27,22 +27,16 @@ const makeSut = (): SutTypes => {
 }
 
 describe('LoadPartner Controller', () => {
-  it('Should call CheckPartnerById with correct value', async () => {
-    const { sut, checkPartnerByIdSpy } = makeSut()
-    await sut.handle(request)
-    expect(checkPartnerByIdSpy.partnerId).toBe(request.partnerId)
-  })
-
-  it('Should return 403 if CheckPartnerById returns false', async () => {
-    const { sut, checkPartnerByIdSpy } = makeSut()
-    checkPartnerByIdSpy.result = false
+  it('Should return 403 if LoadPartnerById returns null', async () => {
+    const { sut, loadPartnerByIdSpy } = makeSut()
+    loadPartnerByIdSpy.result = null
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('partnerId')))
   })
 
-  it('Should return 500 if CheckPartnerById throws', async () => {
-    const { sut, checkPartnerByIdSpy } = makeSut()
-    jest.spyOn(checkPartnerByIdSpy, 'checkById').mockImplementationOnce(() => { throw new Error() })
+  it('Should return 500 if LoadPartnerById throws', async () => {
+    const { sut, loadPartnerByIdSpy } = makeSut()
+    jest.spyOn(loadPartnerByIdSpy, 'load').mockImplementationOnce(() => { throw new Error() })
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(serverError(new Error()))
   })
@@ -51,13 +45,6 @@ describe('LoadPartner Controller', () => {
     const { sut, loadPartnerByIdSpy } = makeSut()
     await sut.handle(request)
     expect(loadPartnerByIdSpy.partnerId).toBe(mockPartnerModel().id)
-  })
-
-  it('Should return 500 if LoadPartnerById throws', async () => {
-    const { sut, loadPartnerByIdSpy } = makeSut()
-    jest.spyOn(loadPartnerByIdSpy, 'load').mockImplementationOnce(() => { throw new Error() })
-    const httpResponse = await sut.handle(request)
-    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   it('Should return 200 on success', async () => {

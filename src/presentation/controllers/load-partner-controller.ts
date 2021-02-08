@@ -1,17 +1,16 @@
-import { CheckPartnerById, LoadPartnerById } from '@/domain/usecases'
+import { LoadPartnerById } from '@/domain/usecases'
 import { InvalidParamError } from '../errors'
 import { forbidden, HttpResponse, ok, serverError } from '../helpers'
 import { Controller } from '../protocols'
 
 export class LoadPartnerController implements Controller {
-  constructor (private readonly checkPartnerById: CheckPartnerById, private readonly loadPartnerById: LoadPartnerById) { }
+  constructor (private readonly loadPartnerById: LoadPartnerById) { }
 
   async handle (request: LoadPartnerController.Request): Promise<HttpResponse> {
     try {
-      const exists = await this.checkPartnerById.checkById(request.partnerId)
-      if (!exists) return forbidden(new InvalidParamError('partnerId'))
-
       const partner = await this.loadPartnerById.load(request.partnerId)
+      if (!partner) return forbidden(new InvalidParamError('partnerId'))
+
       return ok(partner)
     } catch (error) {
       return serverError(error)
