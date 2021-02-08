@@ -1,5 +1,6 @@
-import { AddPartnerParams, AddPartner, CheckPartnerById } from '@/domain/usecases'
+import { AddPartnerParams, AddPartner, CheckPartnerById, LoadPartnerById } from '@/domain/usecases'
 import { PartnerModel } from '@/domain/models'
+import { mockPartnerModel } from '@/tests/domain/mock-partner-model'
 
 export class AddPartnerSpy implements AddPartner {
   params: AddPartnerParams
@@ -15,6 +16,16 @@ export class CheckPartnerByIdSpy implements CheckPartnerById {
   result: boolean = true
 
   async checkById (partnerId: string): Promise<boolean> {
+    this.partnerId = partnerId
+    return this.result
+  }
+}
+
+export class LoadPartnerByIdSpy implements LoadPartnerById {
+  partnerId: string
+  result = mockPartnerModel()
+
+  async load (partnerId: string): Promise<PartnerModel> {
     this.partnerId = partnerId
     return this.result
   }
