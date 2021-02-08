@@ -3,6 +3,8 @@ import { AddPartnerParams } from '@/domain/usecases'
 
 import { Collection } from 'mongodb'
 
+import FakeObjectId from 'bson-objectid'
+
 let partnerCollection: Collection
 
 const addPartnerParams: AddPartnerParams = {
@@ -40,7 +42,7 @@ describe('PartnerMongoRepositoy', () => {
     test('Should return a partner on success', async () => {
       const sut = makeSut()
       const partner = await sut.add(addPartnerParams)
-      expect(partner).toHaveProperty('_id')
+      expect(partner).toHaveProperty('id')
     })
   })
 
@@ -50,6 +52,22 @@ describe('PartnerMongoRepositoy', () => {
       await partnerCollection.insertOne(addPartnerParams)
       const exists = await sut.checkByDocument(addPartnerParams.document)
       expect(exists).toBe(true)
+    })
+  })
+
+  describe('loadById()', () => {
+    it('Should return a partner', async () => {
+      const sut = makeSut()
+      const { insertedId } = await partnerCollection.insertOne(addPartnerParams)
+      const partner = await sut.loadById(insertedId)
+      expect(partner).toBeTruthy()
+      expect(partner.id).toEqual(insertedId)
+    })
+
+    it('Should return Falsy if partner does not exist', async () => {
+      const sut = makeSut()
+      const partner = await sut.loadById(FakeObjectId.generate())
+      expect(partner).toBeFalsy()
     })
   })
 })
