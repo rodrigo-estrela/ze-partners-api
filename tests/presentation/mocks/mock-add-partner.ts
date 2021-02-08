@@ -12,7 +12,7 @@ export class AddPartnerSpy implements AddPartner {
 
 export class CheckPartnerByIdSpy implements CheckPartnerById {
   partnerId: string
-  result: true
+  result: boolean = true
 
   async checkById (partnerId: string): Promise<boolean> {
     this.partnerId = partnerId

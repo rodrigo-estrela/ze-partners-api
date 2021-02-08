@@ -1,5 +1,7 @@
 import { CheckPartnerByIdSpy } from '../mocks'
 import { LoadPartnerController } from '@/presentation/controllers'
+import { forbidden } from '@/presentation/helpers'
+import { InvalidParamError } from '@/presentation/errors'
 
 const request: LoadPartnerController.Request = {
   partnerId: 'valid_id'
@@ -25,5 +27,12 @@ describe('LoadPartner Controller', () => {
     const { sut, checkPartnerByIdSpy } = makeSut()
     await sut.handle(request)
     expect(checkPartnerByIdSpy.partnerId).toBe(request.partnerId)
+  })
+
+  test('Should return 403 if CheckPartnerById returns false', async () => {
+    const { sut, checkPartnerByIdSpy } = makeSut()
+    checkPartnerByIdSpy.result = false
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('partnerId')))
   })
 })
