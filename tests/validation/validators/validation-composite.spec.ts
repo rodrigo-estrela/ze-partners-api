@@ -1,5 +1,5 @@
 import { ValidationSpy } from '@/tests/presentation/mocks'
-import { ValidationComposite } from '../../../src/validation/validators'
+import { ValidationComposite } from '@/validation/validators'
 
 type SutTypes = {
   sut: ValidationComposite

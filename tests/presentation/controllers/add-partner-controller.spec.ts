@@ -1,7 +1,7 @@
 import { ValidationSpy, AddPartnerSpy } from '../mocks'
-import { AddPartnerController } from '../../../src/presentation/controllers'
+import { AddPartnerController } from '@/presentation/controllers'
 import { serverError, badRequest, forbidden } from '@/presentation/helpers'
-import { DocumentInUseError } from '../../../src/presentation/errors'
+import { DocumentInUseError } from '@/presentation/errors'
 
 type MockedRequest = {
   tradingName: string

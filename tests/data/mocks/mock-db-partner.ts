@@ -1,5 +1,5 @@
 import { AddPartnerParams } from '@/domain/usecases'
-import { AddPartnerRepository, CheckPartnerByDocumentRepository } from '../protocols/db/partner'
+import { AddPartnerRepository, CheckPartnerByDocumentRepository } from '@/data/protocols/db/partner'
 import { PartnerModel } from '@/domain/models'
 
 export class AddPartnerRepositorySpy implements AddPartnerRepository {

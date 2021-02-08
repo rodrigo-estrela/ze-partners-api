@@ -1,6 +1,6 @@
 import { Validation } from '@/presentation/protocols'
 import { CoverageAreaValidator } from '@/validation/protocols'
-import { InvalidParamError } from '../../presentation/errors'
+import { InvalidParamError } from '@/presentation/errors'
 
 export class CoverageAreaValidation implements Validation {
   constructor (private readonly fieldName: string, private readonly coverageAreaValidator: CoverageAreaValidator) { }
