@@ -1,6 +1,6 @@
-import { AddressValidation } from '../../../src/validation/validators'
+import { AddressValidation } from '@/validation/validators'
 import { AddressValidatorSpy } from '../mocks'
-import { InvalidParamError } from '../../../src/presentation/errors'
+import { InvalidParamError } from '@/presentation/errors'
 
 const fieldName = 'address'
 

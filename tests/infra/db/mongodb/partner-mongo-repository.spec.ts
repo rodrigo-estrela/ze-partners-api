@@ -1,4 +1,4 @@
-import { MongoHelper, PartnerMongoRepository } from '../../../../src/infra/db/mongodb'
+import { MongoHelper, PartnerMongoRepository } from '@/infra/db/mongodb'
 import { AddPartnerParams } from '@/domain/usecases'
 
 import { Collection } from 'mongodb'

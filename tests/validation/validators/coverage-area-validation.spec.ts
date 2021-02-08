@@ -1,5 +1,5 @@
-import { InvalidParamError } from '../../../src/presentation/errors'
-import { CoverageAreaValidation } from '../../../src/validation/validators'
+import { InvalidParamError } from '@/presentation/errors'
+import { CoverageAreaValidation } from '@/validation/validators'
 import { CoverageAreaValidatorSpy } from '../mocks'
 
 const fieldName = 'coverageArea'
