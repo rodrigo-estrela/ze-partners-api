@@ -26,7 +26,7 @@ export class LoadPartnerByIdRepositorySpy implements LoadPartnerByIdRepository {
   id: string
   result = mockPartnerModel()
 
-  async load (id: string): Promise<LoadPartnerByIdRepository.Result> {
+  async loadById (id: string): Promise<LoadPartnerByIdRepository.Result> {
     this.id = id
     return this.result
   }

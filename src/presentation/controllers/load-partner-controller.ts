@@ -8,7 +8,7 @@ export class LoadPartnerController implements Controller {
 
   async handle (request: LoadPartnerController.Request): Promise<HttpResponse> {
     try {
-      const partner = await this.loadPartnerById.load(request.partnerId)
+      const partner = await this.loadPartnerById.loadById(request.partnerId)
       if (!partner) return forbidden(new InvalidParamError('partnerId'))
 
       return ok(partner)

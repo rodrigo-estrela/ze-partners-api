@@ -39,7 +39,7 @@ describe('LoadPartner Controller', () => {
 
   it('Should return 500 if LoadPartnerById throws', async () => {
     const { sut, loadPartnerByIdSpy } = makeSut()
-    jest.spyOn(loadPartnerByIdSpy, 'load').mockImplementationOnce(() => { throw new Error() })
+    jest.spyOn(loadPartnerByIdSpy, 'loadById').mockImplementationOnce(() => { throw new Error() })
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(serverError(new Error()))
   })
