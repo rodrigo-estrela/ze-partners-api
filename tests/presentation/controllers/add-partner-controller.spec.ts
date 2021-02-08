@@ -3,15 +3,7 @@ import { AddPartnerController } from '@/presentation/controllers'
 import { serverError, badRequest, forbidden } from '@/presentation/helpers'
 import { DocumentInUseError } from '@/presentation/errors'
 
-type MockedRequest = {
-  tradingName: string
-  ownerName: string
-  document: string
-  coverageArea: any
-  address: any
-}
-
-let mockedRequest: MockedRequest
+let request: AddPartnerController.Request
 
 type SutTypes = {
   sut: AddPartnerController
@@ -33,47 +25,43 @@ const makeSut = (): SutTypes => {
 
 describe('AddPartnerController', () => {
   beforeEach(() => {
-    mockedRequest = {
+    request = {
       tradingName: 'any_trading_name',
       ownerName: 'any_owner_name',
       document: 'any_document',
       coverageArea: {
         type: 'valid_type',
-        coordinates: 'valid_coordinates'
+        coordinates: []
       },
       address: {
         type: 'valid_type',
-        coordinates: 'valid_coordinates'
+        coordinates: []
       }
     }
   })
 
   it('Should call validation with corret values', async () => {
     const { sut, validationSpy } = makeSut()
-    const request = { body: mockedRequest }
     await sut.handle(request)
-    expect(validationSpy.input).toEqual(request.body)
+    expect(validationSpy.input).toEqual(request)
   })
 
   it('Should return 400 if the Validation fails', async () => {
     const { sut, validationSpy } = makeSut()
     validationSpy.error = new Error()
-    const request = { body: mockedRequest }
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
 
   it('Should call AddPartner with correct values', async () => {
     const { sut, addPartnerSpy } = makeSut()
-    const request = { body: mockedRequest }
     await sut.handle(request)
-    expect(addPartnerSpy.params).toEqual(request.body)
+    expect(addPartnerSpy.params).toEqual(request)
   })
 
   it('Should should return 403 if document is already in use', async () => {
     const { sut, addPartnerSpy } = makeSut()
     jest.spyOn(addPartnerSpy, 'add').mockResolvedValueOnce(null)
-    const request = { body: mockedRequest }
     const response = await sut.handle(request)
     expect(response).toEqual(forbidden(new DocumentInUseError()))
   })
@@ -81,14 +69,12 @@ describe('AddPartnerController', () => {
   it('Should return 500 if AddPartner throws', async () => {
     const { sut, addPartnerSpy } = makeSut()
     jest.spyOn(addPartnerSpy, 'add').mockImplementationOnce(() => { throw new Error() })
-    const request = { body: mockedRequest }
     const response = await sut.handle(request)
     expect(response).toEqual(serverError(new Error()))
   })
 
   it('Should return 200 on success', async () => {
     const { sut } = makeSut()
-    const request = { body: mockedRequest }
     const response = await sut.handle(request)
     expect(response.statusCode).toBe(200)
     expect(response.body).toHaveProperty('id')
