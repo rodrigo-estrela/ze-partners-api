@@ -1,6 +1,7 @@
 import { AddPartnerParams } from '@/domain/usecases'
-import { AddPartnerRepository, CheckPartnerByDocumentRepository, CheckPartnerByIdRepository } from '@/data/protocols/db/partner'
+import { AddPartnerRepository, CheckPartnerByDocumentRepository, CheckPartnerByIdRepository, LoadPartnerByIdRepository } from '@/data/protocols/db/partner'
 import { PartnerModel } from '@/domain/models'
+import { mockPartnerModel } from '@/tests/domain/mock-partner-model'
 
 export class AddPartnerRepositorySpy implements AddPartnerRepository {
   params: AddPartnerParams
@@ -26,6 +27,16 @@ export class CheckPartnerByIdRepositorySpy implements CheckPartnerByIdRepository
   result = true
 
   async checkById (id: string): Promise<CheckPartnerByIdRepository.Result> {
+    this.id = id
+    return this.result
+  }
+}
+
+export class LoadPartnerByIdRepositorySpy implements LoadPartnerByIdRepository {
+  id: string
+  result = mockPartnerModel()
+
+  async load (id: string): Promise<LoadPartnerByIdRepository.Result> {
     this.id = id
     return this.result
   }
