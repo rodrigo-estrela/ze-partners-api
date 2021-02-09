@@ -1,17 +1,22 @@
 import { SearchNearestPartner } from '@/domain/usecases'
-import { badRequest, HttpResponse, noContent } from '../helpers'
+import { badRequest, HttpResponse, noContent, serverError } from '../helpers'
 import { Controller, Validation } from '../protocols'
 
 export class SearchPartnerController implements Controller {
   constructor (private readonly validation: Validation, private readonly searchNearestPartner: SearchNearestPartner) { }
 
   async handle (request: any): Promise<HttpResponse> {
-    const error = this.validation.validate(request)
-    if (error) return badRequest(error)
+    try {
+      const error = this.validation.validate(request)
+      if (error) return badRequest(error)
 
-    const partner = await this.searchNearestPartner.search(request)
-    if (!partner) return noContent()
-    return null
+      const partner = await this.searchNearestPartner.search(request)
+      if (!partner) return noContent()
+
+      return null
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 import { SearchPartnerController } from '@/presentation/controllers'
-import { badRequest, noContent } from '@/presentation/helpers'
+import { badRequest, noContent, serverError } from '@/presentation/helpers'
 import { ValidationSpy, SearchNearestPartnerSpy } from '../mocks'
 
 const request: SearchPartnerController.Request = { lon: 'any_long', lat: 'any_lat' }
@@ -47,5 +47,12 @@ describe('SearchPartner Controller', () => {
     searchNearestPartnerSpy.result = null
     const response = await sut.handle(request)
     expect(response).toEqual(noContent())
+  })
+
+  it('Should return 500 if AddPartner throws', async () => {
+    const { sut, searchNearestPartnerSpy } = makeSut()
+    jest.spyOn(searchNearestPartnerSpy, 'search').mockImplementationOnce(() => { throw new Error() })
+    const response = await sut.handle(request)
+    expect(response).toEqual(serverError(new Error()))
   })
 })
