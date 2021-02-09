@@ -8,16 +8,19 @@ import FakeObjectId from 'bson-objectid'
 let partnerCollection: Collection
 
 const addPartnerParams: AddPartnerParams = {
-  tradingName: 'any_trading_name',
-  ownerName: 'any_owner_name',
-  document: 'any_document',
+  tradingName: 'Adega da Cerveja - Pinheiros',
+  ownerName: 'Zé da Silva',
+  document: '1432132123891/0001',
   coverageArea: {
-    type: 'any_type',
-    coordinates: []
+    type: 'MultiPolygon',
+    coordinates: [
+      [[[30, 20], [45, 40], [10, 40], [30, 20]]],
+      [[[15, 5], [40, 10], [10, 20], [5, 10], [15, 5]]]
+    ]
   },
   address: {
-    type: 'any_type',
-    coordinates: []
+    type: 'Point',
+    coordinates: [-46.57421, -21.785741]
   }
 }
 
@@ -68,6 +71,48 @@ describe('PartnerMongoRepositoy', () => {
       const sut = makeSut()
       const partner = await sut.loadById(FakeObjectId.generate())
       expect(partner).toBeFalsy()
+    })
+  })
+
+  describe('search()', () => {
+    it('Should return null if none of the partners coverageArea intersects with provided location', async () => {
+      const partners = [
+        {
+          tradingName: 'square_0',
+          ownerName: 'owner_name_0',
+          document: 'document_0',
+          coverageArea: {
+            type: 'MultiPolygon',
+            coordinates: [
+              [[[0, 0], [0, 4], [4, 4], [4, 0], [0, 0]]]
+            ]
+          },
+          address: {
+            type: 'Point',
+            coordinates: [0, 0]
+          }
+        },
+        {
+          tradingName: 'square_1',
+          ownerName: 'owner_name_1',
+          document: 'document_1',
+          coverageArea: {
+            type: 'MultiPolygon',
+            coordinates: [
+              [[[0, 5], [0, 9], [4, 9], [4, 5], [0, 5]]]
+            ]
+          },
+          address: {
+            type: 'Point',
+            coordinates: [0, 5]
+          }
+        }
+      ]
+      await partnerCollection.insertMany(partners)
+      const sut = makeSut()
+      const location = { lon: 2, lat: 10 }
+      const foundPartner = await sut.search(location)
+      expect(foundPartner).toBeFalsy()
     })
   })
 })

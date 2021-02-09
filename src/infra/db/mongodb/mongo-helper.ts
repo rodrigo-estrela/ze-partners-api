@@ -10,6 +10,8 @@ export const MongoHelper = {
       useNewUrlParser: true,
       useUnifiedTopology: true
     })
+    this.client.db().collection('partners').createIndex({ coverageArea: '2dsphere' })
+    this.client.db().collection('partners').createIndex({ address: '2dsphere' })
   },
 
   async disconnect (): Promise<void> {
