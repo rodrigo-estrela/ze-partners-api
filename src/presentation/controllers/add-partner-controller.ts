@@ -1,17 +1,18 @@
 import { Validation, Controller } from '../protocols'
-import { HttpRequest, HttpResponse, serverError, ok, badRequest, forbidden } from '../helpers'
+import { HttpResponse, serverError, ok, badRequest, forbidden } from '../helpers'
 import { AddPartner } from '@/domain/usecases'
 import { DocumentInUseError } from '../errors'
+import { PartnerModel } from '@/domain/models'
 
 export class AddPartnerController implements Controller {
   constructor (private readonly validation: Validation, private readonly addPartner: AddPartner) { }
 
-  async handle (request: HttpRequest): Promise<HttpResponse> {
+  async handle (request: AddPartnerController.Request): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(request.body)
+      const error = this.validation.validate(request)
       if (error) return badRequest(error)
 
-      const partner = await this.addPartner.add(request.body)
+      const partner = await this.addPartner.add(request)
       if (!partner) {
         return forbidden(new DocumentInUseError())
       }
@@ -21,4 +22,8 @@ export class AddPartnerController implements Controller {
       return serverError(error)
     }
   }
+}
+
+export namespace AddPartnerController {
+  export type Request = Omit<PartnerModel, 'id'>
 }

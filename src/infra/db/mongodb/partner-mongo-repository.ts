@@ -1,13 +1,15 @@
 import { AddPartnerRepository, CheckPartnerByDocumentRepository } from '@/data/protocols/db/partner'
 import { PartnerModel } from '@/domain/models'
-import { AddPartnerParams } from '@/domain/usecases'
+import { AddPartnerParams, LoadPartnerById } from '@/domain/usecases'
+import { ObjectId } from 'mongodb'
 import { MongoHelper } from '../mongodb'
 
-export class PartnerMongoRepository implements AddPartnerRepository, CheckPartnerByDocumentRepository {
+export class PartnerMongoRepository implements AddPartnerRepository, CheckPartnerByDocumentRepository, LoadPartnerById {
   async add (data: AddPartnerParams): Promise<PartnerModel> {
     const partnerCollection = await MongoHelper.getCollection('partners')
     const result = await partnerCollection.insertOne(data)
-    return result.ops[0]
+    if (!result.ops[0]) return null
+    return MongoHelper.map(result.ops[0])
   }
 
   async checkByDocument (document: string): Promise<boolean> {
@@ -20,5 +22,12 @@ export class PartnerMongoRepository implements AddPartnerRepository, CheckPartne
       }
     })
     return partner !== null
+  }
+
+  async loadById (partnerId: string): Promise<PartnerModel> {
+    const partnerCollection = await MongoHelper.getCollection('partners')
+    const partner = await partnerCollection.findOne({ _id: new ObjectId(partnerId) })
+    if (!partner) return null
+    return MongoHelper.map(partner)
   }
 }
