@@ -1,4 +1,4 @@
-import { HttpResponse } from '../helpers'
+import { badRequest, HttpResponse } from '../helpers'
 import { Controller, Validation } from '../protocols'
 
 export class SearchPartnerController implements Controller {
@@ -6,6 +6,7 @@ export class SearchPartnerController implements Controller {
 
   async handle (request: any): Promise<HttpResponse> {
     const error = this.validation.validate(request)
+    if (error) return badRequest(error)
     return null
   }
 }
