@@ -6,7 +6,8 @@ export const adaptRoute = (controller: Controller) => {
   return async (req: Request, res: Response) => {
     const httpRequest: HttpRequest = {
       ...(req.body || {}),
-      ...(req.params || {})
+      ...(req.params || {}),
+      ...(req.query || {})
     }
     const httpResponse = await controller.handle(httpRequest)
     res.status(httpResponse.statusCode).json(httpResponse.body)

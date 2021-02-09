@@ -46,7 +46,7 @@ export class PartnerMongoRepository implements
         query: {
           coverageArea: {
             $geoIntersects: {
-              $geometry: { type: 'Point', coordinates: [lon, lat] }
+              $geometry: { type: 'Point', coordinates: [parseFloat(lon), parseFloat(lat)] }
             }
           }
         }
