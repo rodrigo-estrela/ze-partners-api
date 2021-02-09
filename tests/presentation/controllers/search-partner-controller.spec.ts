@@ -55,4 +55,11 @@ describe('SearchPartner Controller', () => {
     const response = await sut.handle(request)
     expect(response).toEqual(serverError(new Error()))
   })
+
+  it('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle(request)
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toHaveProperty('id')
+  })
 })
