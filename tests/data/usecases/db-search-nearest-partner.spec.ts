@@ -23,4 +23,11 @@ describe('DbSearchNearestPartner Usecase', () => {
     await sut.search(location)
     expect(searchNearestPartnerRepositorySpy.params).toBe(location)
   })
+
+  it('Should throw if SearchNearestPartnerRepository throws', async () => {
+    const { sut, searchNearestPartnerRepositorySpy } = makeSut()
+    jest.spyOn(searchNearestPartnerRepositorySpy, 'search').mockImplementationOnce(() => { throw new Error() })
+    const promise = sut.search(location)
+    await expect(promise).rejects.toThrow()
+  })
 })
