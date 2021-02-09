@@ -69,4 +69,110 @@ describe('Partner Routes', () => {
         .expect(200)
     })
   })
+
+  describe('GET /api/partners/search', () => {
+    it('Should return 400 if input validation fails', async () => {
+      await request(app)
+        .get('/api/partners/search')
+        .expect(400)
+    })
+
+    it('Should return 200 on success', async () => {
+      const partners = [
+        {
+          tradingName: 'square_0',
+          ownerName: 'owner_name_0',
+          document: 'document_0',
+          coverageArea: {
+            type: 'MultiPolygon',
+            coordinates: [
+              [[[0, 0], [0, 4], [4, 4], [4, 0], [0, 0]]]
+            ]
+          },
+          address: {
+            type: 'Point',
+            coordinates: [0, 0]
+          }
+        },
+        {
+          tradingName: 'square_1',
+          ownerName: 'owner_name_1',
+          document: 'document_1',
+          coverageArea: {
+            type: 'MultiPolygon',
+            coordinates: [
+              [[[0, 5], [0, 9], [4, 9], [4, 5], [0, 5]]]
+            ]
+          },
+          address: {
+            type: 'Point',
+            coordinates: [0, 5]
+          }
+        }
+      ]
+      await request(app)
+        .post('/api/partners')
+        .send(partners[0])
+        .expect(200)
+
+      await request(app)
+        .post('/api/partners')
+        .send(partners[1])
+        .expect(200)
+
+      await request(app)
+        .get('/api/partners/search')
+        .query({ lon: 2, lat: 2 })
+        .expect(200)
+    })
+
+    it('Should return 204 in provided location is not covered by any of the available partners', async () => {
+      const partners = [
+        {
+          tradingName: 'square_0',
+          ownerName: 'owner_name_0',
+          document: 'document_0',
+          coverageArea: {
+            type: 'MultiPolygon',
+            coordinates: [
+              [[[0, 0], [0, 4], [4, 4], [4, 0], [0, 0]]]
+            ]
+          },
+          address: {
+            type: 'Point',
+            coordinates: [0, 0]
+          }
+        },
+        {
+          tradingName: 'square_1',
+          ownerName: 'owner_name_1',
+          document: 'document_1',
+          coverageArea: {
+            type: 'MultiPolygon',
+            coordinates: [
+              [[[0, 5], [0, 9], [4, 9], [4, 5], [0, 5]]]
+            ]
+          },
+          address: {
+            type: 'Point',
+            coordinates: [0, 5]
+          }
+        }
+      ]
+      await request(app)
+        .post('/api/partners')
+        .send(partners[0])
+        .expect(200)
+
+      await request(app)
+        .post('/api/partners')
+        .send(partners[1])
+        .expect(200)
+
+      await request(app)
+        .get('/api/partners/search')
+        .query({ lon: 2, lat: 10 })
+        .expect(204)
+    })
+  })
 })
