@@ -34,7 +34,7 @@ describe('PartnerMongoRepositoy', () => {
   })
 
   beforeEach(async () => {
-    partnerCollection = await MongoHelper.getCollection('accounts')
+    partnerCollection = await MongoHelper.getCollection('partners')
     await partnerCollection.deleteMany({})
   })
 

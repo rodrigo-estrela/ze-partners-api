@@ -1,6 +1,7 @@
 import { AddPartnerRepository, CheckPartnerByDocumentRepository } from '@/data/protocols/db/partner'
 import { PartnerModel } from '@/domain/models'
 import { AddPartnerParams, LoadPartnerById } from '@/domain/usecases'
+import { ObjectId } from 'mongodb'
 import { MongoHelper } from '../mongodb'
 
 export class PartnerMongoRepository implements AddPartnerRepository, CheckPartnerByDocumentRepository, LoadPartnerById {
@@ -25,7 +26,7 @@ export class PartnerMongoRepository implements AddPartnerRepository, CheckPartne
 
   async loadById (partnerId: string): Promise<PartnerModel> {
     const partnerCollection = await MongoHelper.getCollection('partners')
-    const partner = await partnerCollection.findOne({ _id: partnerId })
+    const partner = await partnerCollection.findOne({ _id: new ObjectId(partnerId) })
     if (!partner) return null
     return MongoHelper.map(partner)
   }

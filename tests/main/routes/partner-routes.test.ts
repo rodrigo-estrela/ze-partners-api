@@ -3,6 +3,7 @@ import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db/mongodb'
 
 import { Collection } from 'mongodb'
+import FakeObjectId from 'bson-objectid'
 
 let partnerCollection: Collection
 
@@ -33,14 +34,39 @@ describe('Partner Routes', () => {
   })
 
   beforeEach(async () => {
-    partnerCollection = await MongoHelper.getCollection('accounts')
+    partnerCollection = await MongoHelper.getCollection('partners')
     await partnerCollection.deleteMany({})
   })
 
-  it('Should return an accoutn on success', async () => {
-    await request(app)
-      .post('/api/partners')
-      .send(partnerData)
-      .expect(200)
+  describe('POST /partners', () => {
+    it('Should return an accoutn on success', async () => {
+      await request(app)
+        .post('/api/partners')
+        .send(partnerData)
+        .expect(200)
+    })
+  })
+
+  describe('GET /partners/:partnerId', () => {
+    it('Should return 403 if invalid partner id is provided', async () => {
+      await request(app)
+        .get(`/api/partners/${FakeObjectId.generate()}`)
+        .expect(403)
+    })
+
+    it('Should return 200 if valid partner id is provided', async () => {
+      let insertedId = ''
+      await request(app)
+        .post('/api/partners')
+        .send(partnerData)
+        .expect(200)
+        .expect((res) => {
+          insertedId = res.body.id
+        })
+
+      await request(app)
+        .get(`/api/partners/${insertedId}`)
+        .expect(200)
+    })
   })
 })
