@@ -6,7 +6,6 @@ export class DbSearchNearestPartner implements SearchNearestPartner {
   constructor (private readonly searchNearestPartnerRepository: SearchNearestPartnerRepository) { }
 
   async search (location: any): Promise<PartnerModel> {
-    await this.searchNearestPartnerRepository.search(location)
-    return null
+    return await this.searchNearestPartnerRepository.search(location)
   }
 }

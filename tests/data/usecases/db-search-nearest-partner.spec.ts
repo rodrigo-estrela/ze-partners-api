@@ -30,4 +30,10 @@ describe('DbSearchNearestPartner Usecase', () => {
     const promise = sut.search(location)
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should return PartnerModel on success', async () => {
+    const { sut, searchNearestPartnerRepositorySpy } = makeSut()
+    const partner = await sut.search(location)
+    expect(partner).toEqual(searchNearestPartnerRepositorySpy.result)
+  })
 })
