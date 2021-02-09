@@ -55,5 +55,7 @@ export class PartnerMongoRepository implements
     }]).toArray()
 
     if (!result[0]) return null
+
+    return MongoHelper.map(result[0])
   }
 }
