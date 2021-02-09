@@ -1,11 +1,11 @@
-import { SearchPartnerController } from '@/presentation/controllers'
+import { SearchNearestPartnerController } from '@/presentation/controllers'
 import { badRequest, noContent, serverError } from '@/presentation/helpers'
 import { ValidationSpy, SearchNearestPartnerSpy } from '../mocks'
 
-const request: SearchPartnerController.Request = { lon: 'any_long', lat: 'any_lat' }
+const request: SearchNearestPartnerController.Request = { lon: 'any_long', lat: 'any_lat' }
 
 type SutTypes = {
-  sut: SearchPartnerController
+  sut: SearchNearestPartnerController
   validationSpy: ValidationSpy
   searchNearestPartnerSpy: SearchNearestPartnerSpy
 }
@@ -13,7 +13,7 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const searchNearestPartnerSpy = new SearchNearestPartnerSpy()
-  const sut = new SearchPartnerController(validationSpy, searchNearestPartnerSpy)
+  const sut = new SearchNearestPartnerController(validationSpy, searchNearestPartnerSpy)
 
   return {
     sut,
