@@ -1,5 +1,5 @@
 import { SearchPartnerController } from '@/presentation/controllers'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, noContent } from '@/presentation/helpers'
 import { ValidationSpy, SearchNearestPartnerSpy } from '../mocks'
 
 const request: SearchPartnerController.Request = { lon: 'any_long', lat: 'any_lat' }
@@ -40,5 +40,12 @@ describe('SearchPartner Controller', () => {
     const { sut, searchNearestPartnerSpy } = makeSut()
     await sut.handle(request)
     expect(searchNearestPartnerSpy.params).toEqual(request)
+  })
+
+  it('Should return 204 if searchNearestPartner returns Falsy', async () => {
+    const { sut, searchNearestPartnerSpy } = makeSut()
+    searchNearestPartnerSpy.result = null
+    const response = await sut.handle(request)
+    expect(response).toEqual(noContent())
   })
 })

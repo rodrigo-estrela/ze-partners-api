@@ -1,5 +1,5 @@
 import { SearchNearestPartner } from '@/domain/usecases'
-import { badRequest, HttpResponse } from '../helpers'
+import { badRequest, HttpResponse, noContent } from '../helpers'
 import { Controller, Validation } from '../protocols'
 
 export class SearchPartnerController implements Controller {
@@ -10,6 +10,7 @@ export class SearchPartnerController implements Controller {
     if (error) return badRequest(error)
 
     const partner = await this.searchNearestPartner.search(request)
+    if (!partner) return noContent()
     return null
   }
 }
