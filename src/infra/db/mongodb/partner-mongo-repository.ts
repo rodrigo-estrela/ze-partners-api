@@ -40,7 +40,7 @@ export class PartnerMongoRepository implements
     const partnerCollection = await MongoHelper.getCollection('partners')
     const result = await partnerCollection.aggregate([{
       $geoNear: {
-        near: { type: 'Point', coordinates: [30, 20] },
+        near: { type: 'Point', coordinates: [parseFloat(lon), parseFloat(lat)] },
         distanceField: 'dis.calculated',
         key: 'address',
         query: {
