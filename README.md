@@ -1,10 +1,10 @@
 # Ze Partners API - Technical Test (Software Engineer Backend)
 
-REST API that implements the three following features and respects the following technical requirements:
+REST API that implements the three following features:
 
 ### 1 - Create a Partner
 ### 2 - Load Partner by id
-### 3 - Given a location
+### 3 - Find nearest partner for a given location
 
 
 # Prerequisites
@@ -35,15 +35,24 @@ Note: If you don't to install docker you will need to have mongodb configured lo
    ```sh
    Server running at http://localhost:<PORT>
    ```
-# How to deploy
-1. Run dev script
+# Test scripts
+* To run all unit tests, execute the following script:
    ```sh
-   npm run build
+   npm run test:unit
    ```
-1. Push to Heroku
+* To run all integration tests, execute the following script:
    ```sh
-   git push heroku master
+   npm run test:integration
    ```
+* To run ALL tests, execute the following script:
+   ```sh
+   npm run test
+   ```
+* To check tests coverage, execute the following script:
+   ```sh
+   npm run test:ci
+   ```
+
 
 # Endpoints
 ## POST /api/partners
@@ -57,13 +66,13 @@ Parameters | Comments
 **address** | Required. A valid GeoJON Point
 -------------------
 ## GET /api/partners/:partnerId
-**Save a partner to the database**
+**Returns a partner**
 Parameters | Comments
 ------------- | -------------
 **partnerId** | A valid ObjectId
 ------------------
 ## GET /api/partners/search?lon=??lat=??
-**Save a partner to the database**
+**Search the nearest partner which the coverage area includes the given location**
 Parameters | Comments
 ------------- | -------------
 **lon** | Required. A valid longitude data [number]
