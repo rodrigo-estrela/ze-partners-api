@@ -21,12 +21,18 @@ export const ok = (data: any): HttpResponse => ({
 
 export const badRequest = (error: Error): HttpResponse => ({
   statusCode: 400,
-  body: error
+  body: {
+    error: error.name,
+    message: error.message
+  }
 })
 
 export const forbidden = (error: Error): HttpResponse => ({
   statusCode: 403,
-  body: error
+  body: {
+    error: error.name,
+    message: error.message
+  }
 })
 
 export const noContent = (): HttpResponse => ({
