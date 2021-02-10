@@ -1,11 +1,11 @@
-import { AddPartnerParams, AddPartner, LoadPartnerById, SearchNearestPartner } from '@/domain/usecases'
+import { AddPartner, LoadPartnerById, SearchNearestPartner } from '@/domain/usecases'
 import { PartnerModel } from '@/domain/models'
 import { mockPartnerModel } from '@/tests/domain/mock-partner-model'
 
 export class AddPartnerSpy implements AddPartner {
-  params: AddPartnerParams
+  params: AddPartner.Params
 
-  async add (params: AddPartnerParams): Promise<PartnerModel> {
+  async add (params: AddPartner.Params): Promise<PartnerModel> {
     this.params = params
     return Object.assign({}, { id: 'any_id' }, params)
   }

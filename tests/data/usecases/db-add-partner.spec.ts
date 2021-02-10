@@ -1,8 +1,8 @@
 import { AddPartnerRepositorySpy, CheckPartnerByDocumentRepositorySpy } from '../mocks'
 import { DbAddPartner } from '../../../src/data/usecases'
-import { AddPartnerParams } from '@/domain/usecases'
+import { AddPartner } from '@/domain/usecases'
 
-const partnerData: AddPartnerParams = {
+const partnerData: AddPartner.Params = {
   tradingName: 'any_trading_name',
   ownerName: 'any_owner_name',
   document: 'any_document',

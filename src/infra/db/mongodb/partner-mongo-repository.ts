@@ -1,6 +1,6 @@
 import { AddPartnerRepository, CheckPartnerByDocumentRepository, SearchNearestPartnerRepository } from '@/data/protocols/db/partner'
 import { PartnerModel } from '@/domain/models'
-import { AddPartnerParams, LoadPartnerById } from '@/domain/usecases'
+import { AddPartner, LoadPartnerById } from '@/domain/usecases'
 import { ObjectId } from 'mongodb'
 import { MongoHelper } from '../mongodb'
 
@@ -9,7 +9,7 @@ export class PartnerMongoRepository implements
   CheckPartnerByDocumentRepository,
   LoadPartnerById,
   SearchNearestPartnerRepository {
-  async add (data: AddPartnerParams): Promise<PartnerModel> {
+  async add (data: AddPartner.Params): Promise<PartnerModel> {
     const partnerCollection = await MongoHelper.getCollection('partners')
     const result = await partnerCollection.insertOne(data)
     if (!result.ops[0]) return null
@@ -40,7 +40,7 @@ export class PartnerMongoRepository implements
     const partnerCollection = await MongoHelper.getCollection('partners')
     const result = await partnerCollection.aggregate([{
       $geoNear: {
-        near: { type: 'Point', coordinates: [30, 20] },
+        near: { type: 'Point', coordinates: [parseFloat(lon), parseFloat(lat)] },
         distanceField: 'dis.calculated',
         key: 'address',
         query: {

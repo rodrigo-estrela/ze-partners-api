@@ -1,7 +1,9 @@
 import { PartnerModel } from '../models'
 
 export interface AddPartner {
-  add: (data: AddPartnerParams) => Promise<PartnerModel> | undefined
+  add: (data: AddPartner.Params) => Promise<PartnerModel> | undefined
 }
 
-export type AddPartnerParams = Omit<PartnerModel, 'id'>
+export namespace AddPartner {
+  export type Params = Omit<PartnerModel, 'id'>
+}

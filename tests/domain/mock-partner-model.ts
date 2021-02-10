@@ -1,4 +1,5 @@
 import { PartnerModel } from '@/domain/models'
+import { AddPartner } from './usecases'
 
 export const mockPartnerModel = (): PartnerModel => ({
   id: 'any_id',
@@ -17,3 +18,38 @@ export const mockPartnerModel = (): PartnerModel => ({
     coordinates: [-46.57421, -21.785741]
   }
 })
+
+export const mockAddPartnerParams = (): AddPartner.Params[] => {
+  return [
+    {
+      tradingName: 'square_0',
+      ownerName: 'owner_name_0',
+      document: 'document_0',
+      coverageArea: {
+        type: 'MultiPolygon',
+        coordinates: [
+          [[[0, 0], [0, 4], [4, 4], [4, 0], [0, 0]]]
+        ]
+      },
+      address: {
+        type: 'Point',
+        coordinates: [0, 0]
+      }
+    },
+    {
+      tradingName: 'square_1',
+      ownerName: 'owner_name_1',
+      document: 'document_1',
+      coverageArea: {
+        type: 'MultiPolygon',
+        coordinates: [
+          [[[0, 5], [0, 9], [4, 9], [4, 5], [0, 5]]]
+        ]
+      },
+      address: {
+        type: 'Point',
+        coordinates: [0, 5]
+      }
+    }
+  ]
+}
